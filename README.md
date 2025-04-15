@@ -44,7 +44,7 @@ display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=T
 * Goodness of Fit：模型的擬合優度 (R²)。
 * 投資組合中每支股票的財務指標，包括 Sharpe Ratio、Beta、PE Ratio、Market Cap 等。
 
-範例輸出如下：
+2025/04/15範例輸出如下：
 ```
 ### Goodness of Fit: 0.8929511590632132
 |      |   Sharpo |    beta |   trailingPE |   forwardPE |   shortRatio |     marketCap |   profitMargins |   priceToBook |   currentPrice |   targetHighPrice |   targetLowPrice |   recommendationMean |   RiskProfit |
