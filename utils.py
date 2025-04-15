@@ -2,18 +2,19 @@ import requests, itertools, sklearn
 import pandas as pd
 import yfinance as yf
 from bs4 import BeautifulSoup
-from tqdm.notebook import trange, tqdm
+from tqdm.notebook import tqdm
 
 class IXIC_Parsor():
-  def __init__(self, portfolio_list):
+  def __init__(self, portfolio_list, tqdm_provider=tqdm):
     self.market = '^IXIC'
+    self.tqdm_provider = tqdm_provider
     self.company_list = portfolio_list
     self.update()
 
   def update(self):
     columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
     self.info_table = pd.DataFrame(columns=columns)
-    for code in tqdm(set(tuple(itertools.chain(*portfolio_lists.values())))):
+    for code in self.tqdm_provider(set(tuple(itertools.chain(*portfolio_lists.values())))):
       row_data = {'Update': False}
       df = yf.Ticker(code)
       for key in columns:
