@@ -1,6 +1,6 @@
 # PortfolioLab-Parser
 ```
-git clon https://github.com/MarkovChenITRI/PortfolioLab-Parser.git
+git clon https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```
 ```python
 portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
@@ -12,6 +12,7 @@ portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN'
 }
 ```
 ```python
+from PortfolioLab_Parser.utils import IXIC_Parsor
 from IPython.display import display_markdown
 
 parsor = IXIC_Parsor(portfolio_list = portfolio_list)
