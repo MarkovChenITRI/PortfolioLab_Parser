@@ -40,5 +40,5 @@ class IXIC_Parsor():
     y_pred = model.predict(X)
     self.r2 = sklearn.metrics.r2_score(y, y_pred)
     print(f"R-squared score: {self.r2}")
-    self.info_table['RiskProfit'] = y_pred * self.r2 + self.info_table['Sharpo'] * (1 - self.r2)
-    return self.info_table.sort_values(by=['RiskProfit'], ascending=False)
+    self.info_table['Premium'] = y_pred * self.r2 + self.info_table['Sharpo'] * (1 - self.r2)
+    return self.info_table.sort_values(by=['Premium'], ascending=False)
