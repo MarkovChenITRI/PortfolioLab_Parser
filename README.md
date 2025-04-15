@@ -13,7 +13,7 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```
 ## 使用方法
 
-#### 1. 定義投資組合
+### 1. 定義投資組合
 
 在程式中定義投資組合的分類及其對應的股票代碼。例如：
 ```python
@@ -26,7 +26,7 @@ portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN'
 }
 ```
 
-#### 2. 執行分析
+### 2. 執行分析
 
 使用 IXIC_Parsor 類別進行分析，並顯示結果：
 ```python
