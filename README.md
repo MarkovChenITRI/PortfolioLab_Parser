@@ -1,7 +1,21 @@
 # PortfolioLab-Parser
+
+PortfolioLab-Parser 是一個用於分析和評估投資組合的工具，提供基於財務數據的回歸分析和可視化結果。該工具旨在幫助用戶快速了解投資組合的表現，並提供相關的統計指標。
+
+---
+
+## 安裝
+
+請使用以下指令將此 Repository 克隆到本地環境：
+
+```bash
+git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```
-git clon https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
-```
+## 使用方法
+
+#### 1. 定義投資組合
+
+在程式中定義投資組合的分類及其對應的股票代碼。例如：
 ```python
 portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
           'robotics': ['BSX', 'TELA'],
@@ -11,6 +25,10 @@ portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN'
           'pda': ['AAPL', 'DELL', 'HPQ']
 }
 ```
+
+#### 2. 執行分析
+
+使用 IXIC_Parsor 類別進行分析，並顯示結果：
 ```python
 from PortfolioLab_Parser.utils import IXIC_Parsor
 from IPython.display import display_markdown
@@ -19,7 +37,15 @@ parsor = IXIC_Parsor(portfolio_list = portfolio_list)
 df = parsor.fit()
 display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=True)
 ```
-## Output Look Like
+
+### 3. 輸出結果
+
+執行程式後，將輸出以下內容：
+* Goodness of Fit：模型的擬合優度 (R²)。
+* 投資組合中每支股票的財務指標，包括 Sharpe Ratio、Beta、PE Ratio、Market Cap 等。
+
+範例輸出如下：
+```
 ### Goodness of Fit: 0.8929511590632132
 |      |   Sharpo |    beta |   trailingPE |   forwardPE |   shortRatio |     marketCap |   profitMargins |   priceToBook |   currentPrice |   targetHighPrice |   targetLowPrice |   recommendationMean |   RiskProfit |
 |:-----|---------:|--------:|-------------:|------------:|-------------:|--------------:|----------------:|--------------:|---------------:|------------------:|-----------------:|---------------------:|-------------:|
@@ -46,3 +72,4 @@ display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=T
 | INTC |    -0.74 |   1.122 |    nan       |    20.9381  |         1.08 |   88563580928 |        -0.35321 |      0.885894 |          20.31 |             31    |           17.7   |              3       |  -0.591502   |
 | AMKR |    -0.86 |   1.892 |     11.8741  |     8.89005 |         2.1  |    4195010816 |         0.05604 |      1.00945  |          16.98 |             36    |           16     |              2       |  -0.7232     |
 | TELA |    -1.11 |   0.984 |    nan       |    -1.48529 |         1.73 |      39946612 |        -0.54605 |      1.39889  |           1.01 |              7    |            2     |              1.6     |  -0.956145   |
+```
