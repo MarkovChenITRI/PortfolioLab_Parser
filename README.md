@@ -19,7 +19,7 @@ parsor = IXIC_Parsor(portfolio_list = portfolio_list)
 df = parsor.fit()
 display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=True)
 ```
-# Output
+## Output Look Like
 ### Goodness of Fit: 0.8929511590632132
 |      |   Sharpo |    beta |   trailingPE |   forwardPE |   shortRatio |     marketCap |   profitMargins |   priceToBook |   currentPrice |   targetHighPrice |   targetLowPrice |   recommendationMean |   RiskProfit |
 |:-----|---------:|--------:|-------------:|------------:|-------------:|--------------:|----------------:|--------------:|---------------:|------------------:|-----------------:|---------------------:|-------------:|
