@@ -8,6 +8,7 @@ class IXIC_Parsor():
   def __init__(self, portfolio_list):
     self.market = '^IXIC'
     self.company_list = portfolio_list
+    self.update()
 
   def update(self):
     columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
