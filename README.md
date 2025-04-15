@@ -1,4 +1,7 @@
 # PortfolioLab-Parser
+```
+git clon https://github.com/MarkovChenITRI/PortfolioLab-Parser.git
+```
 ```python
 portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
           'robotics': ['BSX', 'TELA'],
