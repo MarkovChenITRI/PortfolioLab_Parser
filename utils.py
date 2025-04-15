@@ -32,13 +32,12 @@ class IXIC_Parsor():
     res = str(header_element.find_all('b')[1]).replace('<b>', '').replace('</b>', '')
     return float(res)
 
-  def fit(self):
-    features = ['forwardPE', 'trailingPE', 'beta', 'shortRatio', 'profitMargins']
-    X, y = self.info_table[features], df['Sharpo']
+  def fit(self, features = ['forwardPE', 'trailingPE', 'beta', 'shortRatio', 'profitMargins']):
+    X, y = self.info_table[features], self.info_table['Sharpo']
     model = sklearn.ensemble.RandomForestRegressor(random_state=42)
     model.fit(X, y)
     y_pred = model.predict(X)
-    r2 = sklearn.metrics.r2_score(y, y_pred)
-    print(f"R-squared score: {r2}")
-    self.info_table['RiskProfit'] = y_pred * r2 + df['Sharpo'] * (1 - r2)
+    self.r2 = sklearn.metrics.r2_score(y, y_pred)
+    print(f"R-squared score: {self.r2}")
+    self.info_table['RiskProfit'] = y_pred * self.r2 + self.info_table['Sharpo'] * (1 - self.r2)
     return self.info_table.sort_values(by=['RiskProfit'], ascending=False)
