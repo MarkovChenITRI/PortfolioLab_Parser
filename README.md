@@ -47,7 +47,7 @@ display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=T
 2025/04/15範例輸出如下：
 ```
 ### Goodness of Fit: 0.8929511590632132
-|      |   Sharpo |    beta |   trailingPE |   forwardPE |   shortRatio |     marketCap |   profitMargins |   priceToBook |   currentPrice |   targetHighPrice |   targetLowPrice |   recommendationMean |   RiskProfit |
+|      |   Sharpo |    beta |   trailingPE |   forwardPE |   shortRatio |     marketCap |   profitMargins |   priceToBook |   currentPrice |   targetHighPrice |   targetLowPrice |   recommendationMean |   Preimum |
 |:-----|---------:|--------:|-------------:|------------:|-------------:|--------------:|----------------:|--------------:|---------------:|------------------:|-----------------:|---------------------:|-------------:|
 | BSX  |     1.62 |   0.731 |     75.416   |    33.7885  |         1.6  |  139431919616 |         0.11071 |      6.38513  |          94.27 |            135    |           84     |              1.5     |   1.16459    |
 | IBM  |     1.11 |   0.662 |     37.1788  |    22.5316  |         3.98 |  221671735296 |         0.09598 |      8.10923  |         239.06 |            320    |          160     |              2.42857 |   0.953912   |
