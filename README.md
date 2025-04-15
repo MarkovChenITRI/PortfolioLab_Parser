@@ -22,7 +22,7 @@ portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN'
           'fab': ['TSM', 'ASML', 'AMAT', 'INTC', 'AMKR'],
           'ai': ['XOVR', 'MSFT', 'META', 'GOOG'],
           'it/ot': ['MSFT', 'AMZN', 'GOOG'],
-          'pda': ['AAPL', 'DELL', 'HPQ']
+          'pda': ['AAPL', 'DELL', 'HPQ', 'META']
 }
 ```
 
