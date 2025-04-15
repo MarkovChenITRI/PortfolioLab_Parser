@@ -14,7 +14,7 @@ class IXIC_Parsor():
   def update(self):
     columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
     self.info_table = pd.DataFrame(columns=columns)
-    for code in self.tqdm_provider(set(tuple(itertools.chain(*portfolio_lists.values())))):
+    for code in self.tqdm_provider(set(tuple(itertools.chain(*self.company_list.values())))):
       row_data = {'Update': False}
       df = yf.Ticker(code)
       for key in columns:
