@@ -15,7 +15,7 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 
 ### 1. 新增、刪除投資標的
 
-在程式中定義投資組合的分類及其對應的股票代碼(需為YFinance可得的)。例如：
+在程式中定義投資組合的分類及其對應的股票代碼(*需為YFinance可取得的代號)。例如：
 ```python
 from PortfolioLab_Parser.utils import Portfolio
 portfolio = Portfolio()
