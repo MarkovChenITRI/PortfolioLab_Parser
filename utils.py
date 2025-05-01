@@ -99,11 +99,11 @@ class IXIC_Parsor():
                     loaded_portfolio_list[category].remove(code)
                     res = f"[SUCCESS] Removed stock '{code}' from category '{category}'."
                     print(res)
+                    if isinstance(self.info_table, pd.DataFrame):
+                        if code in self.info_table.index:
+                            self.info_table = self.info_table.drop(index=code)
                     if not loaded_portfolio_list[category]:  # Remove industry if empty
                         del loaded_portfolio_list[category]
-                        if isinstance(self.info_table, pd.DataFrame):
-                            if code in self.info_table.index:
-                                self.info_table = self.info_table.drop(index=code)
                         res = f"[INFO] category '{category}' is now empty and has been removed."
                         print(res)
                 else:

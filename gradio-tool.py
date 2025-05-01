@@ -6,6 +6,7 @@ import pandas as pd
 
 class Functions():
     def __init__(self):
+        self.df = None
         self.detail_col = ['Name', 'beta', 'Premium', 'forwardPE', 'shortRatio', 'currentPrice', 'targetLowPrice', 'targetHighPrice']
 
     def is_internet_connected(self):
@@ -52,6 +53,38 @@ class Functions():
             self.df['Premium'] = self.df['Premium'].round(2)
             return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)
 
+    def add_stock(self, category, stock):
+        portfolio_list, res = parser.add(category, stock)
+        gr.Info(res, duration=5)
+        if isinstance(self.df, pd.DataFrame):
+            df = parser.info_table.copy()
+            categories = []
+            for code in df.index:
+                for category in portfolio_list:
+                    if code in portfolio_list[category]:
+                        categories.append(category); break
+            df['categories'] = categories
+            df['Name'] = df.index
+            df['Premium'] = df['Premium'].round(2)
+            self.df = df.loc[:, self.detail_col]
+        return self.df, transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
+
+    def remove_stock(self, category, stock):
+        portfolio_list, res = parser.remove(category, stock)
+        gr.Info(res, duration=5)
+        if isinstance(self.df, pd.DataFrame):
+            df = parser.info_table.copy()
+            categories = []
+            for code in df.index:
+                for category in portfolio_list:
+                    if code in portfolio_list[category]:
+                        categories.append(category); break
+            df['categories'] = categories
+            df['Name'] = df.index
+            df['Premium'] = df['Premium'].round(2)
+            self.df = df.loc[:, self.detail_col]
+        return self.df, transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
+
 def transform_portfolio(portfolio_dict):
     transformed = {}
     for category, stocks in portfolio_dict.items():
@@ -60,16 +93,6 @@ def transform_portfolio(portfolio_dict):
             "type": '\n'
         }
     return transformed
-
-def add_stock(category, stock):
-    portfolio_list, res = parser.add(category, stock)
-    gr.Info(res, duration=5)
-    return transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
-
-def remove_stock(category, stock):
-    portfolio_list, res = parser.remove(category, stock)
-    gr.Info(res, duration=5)
-    return transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
 
 func = Functions()
 parser = IXIC_Parsor('./portfolio_list.yaml')
@@ -122,10 +145,10 @@ with gr.Blocks() as demo:
                         inputs= None, 
                         outputs=[scatter_plot, dataframe, 
                                  positive_reward, negative_reward, neutral_reward])
-    add_button.click(add_stock, 
+    add_button.click(func.add_stock, 
                      inputs=[industry_input, stock_input], 
-                     outputs=[paramviewer, industry_input, stock_input])
-    remove_button.click(remove_stock, 
+                     outputs=[dataframe, paramviewer, industry_input, stock_input])
+    remove_button.click(func.remove_stock, 
                         inputs=[industry_input, stock_input], 
-                        outputs=[paramviewer, industry_input, stock_input])
+                        outputs=[dataframe, paramviewer, industry_input, stock_input])
 demo.launch()
