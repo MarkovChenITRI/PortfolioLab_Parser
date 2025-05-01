@@ -1,6 +1,6 @@
 import gradio as gr
 from PIL import Image
-from utils import IXIC_Parsor, Portfolio, asyncio
+from utils import IXIC_Parsor, asyncio
 import requests
 import pandas as pd
 
@@ -21,7 +21,6 @@ class Functions():
             return None
         else:
             df = self.df.copy()
-            print(df.shape)
             if positive_reward:
                 df = df[df['Premium'] > 1]
                 positive_reward, negative_reward, neutral_reward = True, False, False
@@ -35,14 +34,12 @@ class Functions():
 
             return df.loc[:, self.detail_col], positive_reward, negative_reward, neutral_reward
 
-    def analysis_portfolio(self, portfolio_list):
+    def analysis_portfolio(self):
         if not self.is_internet_connected():
             gr.Info("Internet not are not connected.", duration=5)
             return None, None, None
         else:
-            portfolio_list = {i: portfolio_list[i]["default"].strip('\n').split(' | ') for i in portfolio_list}
-
-            parser = IXIC_Parsor(portfolio_list = portfolio_list)
+            portfolio_list = parser.load()
             asyncio.run(parser.update_async())
             self.df = parser.fit()
             categories = []
@@ -65,17 +62,17 @@ def transform_portfolio(portfolio_dict):
     return transformed
 
 def add_stock(category, stock):
-    portfolio_list, res = portfolio.add(category, stock)
+    portfolio_list, res = parser.add(category, stock)
     gr.Info(res, duration=5)
     return transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
 
 def remove_stock(category, stock):
-    portfolio_list, res = portfolio.remove(category, stock)
+    portfolio_list, res = parser.remove(category, stock)
     gr.Info(res, duration=5)
     return transform_portfolio(portfolio_list), gr.update(value=""), gr.update(value="")
 
 func = Functions()
-portfolio = Portfolio()
+parser = IXIC_Parsor('./portfolio_list.yaml')
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column(scale=1):
@@ -84,7 +81,7 @@ with gr.Blocks() as demo:
                      show_share_button = False,
                      show_download_button = False,
                      type="pil")
-            paramviewer = gr.ParamViewer(transform_portfolio(portfolio.load()),
+            paramviewer = gr.ParamViewer(transform_portfolio(parser.load()),
                 header='Portfolio List',
             )
             start_button = gr.Button("Update/Test")
@@ -122,7 +119,7 @@ with gr.Blocks() as demo:
                         inputs= [positive_reward, negative_reward, neutral_reward],
                         outputs=[dataframe, positive_reward, negative_reward, neutral_reward])
     start_button.click(func.analysis_portfolio, 
-                        inputs= [paramviewer], 
+                        inputs= None, 
                         outputs=[scatter_plot, dataframe, 
                                  positive_reward, negative_reward, neutral_reward])
     add_button.click(add_stock, 
