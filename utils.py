@@ -38,6 +38,7 @@ async def get_sharpo_async(session, code):
 class IXIC_Parsor():
     def __init__(self, config_path='./portfolio_list.yaml'):
         self.market = '^IXIC'
+        self.info_table = None
         self.config_path = config_path
 
     async def update_async(self):
@@ -73,13 +74,15 @@ class IXIC_Parsor():
                     loaded_portfolio_list[category].append(code)
                     res = f"[SUCCESS] Added stock '{code}' to category '{category}'."
                     print(res)
-                    code, row_data = fetch_ticker_info(code, self.columns)
-                    self.fit()
-                    self.info_table.loc[code] = row_data
+                    if isinstance(self.info_table, pd.DataFrame):
+                        if code not in self.info_table.index:
+                            code, row_data = fetch_ticker_info(code, self.columns)
+                            self.info_table.loc[code] = row_data
+                            self.fit()
+                    
                 except Exception as e:
                     res = f"[ERROR] Failed to add stock '{code}' to category '{category}': {e}"
                     print(res)
-                    return loaded_portfolio_list
             else:
                 res = f"[WARNING] Stock '{code}' already exists in category '{category}'."
                 print(res)
@@ -97,7 +100,10 @@ class IXIC_Parsor():
                     res = f"[SUCCESS] Removed stock '{code}' from category '{category}'."
                     print(res)
                     if not loaded_portfolio_list[category]:  # Remove industry if empty
-                        del loaded_portfolio_list[category], self.info_table.loc[code]
+                        del loaded_portfolio_list[category]
+                        if isinstance(self.info_table, pd.DataFrame):
+                            if code in self.info_table.index:
+                                self.info_table = self.info_table.drop(index=code)
                         res = f"[INFO] category '{category}' is now empty and has been removed."
                         print(res)
                 else:
