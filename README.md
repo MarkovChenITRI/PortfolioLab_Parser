@@ -28,11 +28,10 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 
 ### 2. 執行分析
 
-使用 IXIC_Parsor 類別進行分析，並顯示結果：
+使用 IXIC_Parsor 類別進行分析：
 ```python
 import asyncio
 from utils import IXIC_Parsor
-from IPython.display import display_markdown
 
 portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
           'robotics': ['BSX', 'TELA'],
@@ -45,11 +44,14 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 parser = IXIC_Parsor(portfolio_list = portfolio_list)
 asyncio.run(parser.update_async())
 df = parser.fit()
+```
+### 3. 顯示結果
+
+如果您使用Google Colab來測試這段程式，可以使用IPython來顯示分析結果：
+```python
+from IPython.display import display_markdown
 display_markdown(f"### Goodness of Fit: {parser.r2}\n" + df.to_markdown(), raw=True)
 ```
-
-### 3. 輸出結果
-
 執行程式後，將輸出以下內容：
 * Goodness of Fit：模型的擬合優度 (R²)。
 * 投資組合中每支股票的財務指標，包括 Sharpe Ratio、Beta、PE Ratio、Market Cap 等。
