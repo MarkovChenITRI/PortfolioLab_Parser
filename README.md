@@ -30,12 +30,22 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 
 使用 IXIC_Parsor 類別進行分析，並顯示結果：
 ```python
-from PortfolioLab_Parser.utils import IXIC_Parsor
+import asyncio
+from utils import IXIC_Parsor
 from IPython.display import display_markdown
 
-parsor = IXIC_Parsor(portfolio_list = portfolio_list)
-df = parsor.fit()
-display_markdown(f"### Goodness of Fit: {parsor.r2}\n" + df.to_markdown(), raw=True)
+portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
+          'robotics': ['BSX', 'TELA'],
+          'fab': ['TSM', 'ASML', 'AMAT', 'INTC', 'AMKR'],
+          'ai': ['XOVR', 'MSFT', 'META', 'GOOG'],
+          'it/ot': ['MSFT', 'AMZN', 'GOOG'],
+          'pda': ['AAPL', 'DELL', 'HPQ', 'META']
+}
+
+parser = IXIC_Parsor(portfolio_list = portfolio_list)
+asyncio.run(parser.update_async())
+df = parser.fit()
+display_markdown(f"### Goodness of Fit: {parser.r2}\n" + df.to_markdown(), raw=True)
 ```
 
 ### 3. 輸出結果
