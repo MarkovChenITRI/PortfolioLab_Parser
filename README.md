@@ -13,17 +13,14 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```
 ## 使用方法
 
-### 1. 定義投資組合
+### 1. 新增、刪除投資標的
 
 在程式中定義投資組合的分類及其對應的股票代碼。例如：
 ```python
-portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
-          'robotics': ['BSX', 'TELA'],
-          'fab': ['TSM', 'ASML', 'AMAT', 'INTC', 'AMKR'],
-          'ai': ['XOVR', 'MSFT', 'META', 'GOOG'],
-          'it/ot': ['MSFT', 'AMZN', 'GOOG'],
-          'pda': ['AAPL', 'DELL', 'HPQ', 'META']
-}
+from PortfolioLab_Parser.utils import Portfolio
+portfolio = Portfolio()
+Portfolio.remove(category='AI', code='XOVR')
+Portfolio.add(category='AI', code='XOVR')
 ```
 
 ### 2. 執行分析
@@ -32,13 +29,7 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 ```python
 from PortfolioLab_Parser.utils import IXIC_Parsor, asyncio
 
-portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
-          'robotics': ['BSX', 'TELA'],
-          'fab': ['TSM', 'ASML', 'AMAT', 'INTC', 'AMKR'],
-          'ai': ['XOVR', 'MSFT', 'META', 'GOOG'],
-          'it/ot': ['MSFT', 'AMZN', 'GOOG'],
-          'pda': ['AAPL', 'DELL', 'HPQ', 'META']
-}
+portfolio_list = Portfolio.load()
 
 parser = IXIC_Parsor(portfolio_list = portfolio_list)
 asyncio.run(parser.update_async())
