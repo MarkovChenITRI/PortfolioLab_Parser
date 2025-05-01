@@ -13,4 +13,5 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 parser = IXIC_Parsor(portfolio_list = portfolio_list)
 asyncio.run(parser.update_async())
 df = parser.fit()
+df.to_csv('output.csv', index=True)
 #display_markdown(f"### Goodness of Fit: {parser.r2}\n" + df.to_markdown(), raw=True)
