@@ -30,8 +30,7 @@ portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN',
 
 使用 IXIC_Parsor 類別進行分析：
 ```python
-import asyncio
-from utils import IXIC_Parsor
+from PortfolioLab_Parser.utils import IXIC_Parsor, asyncio
 
 portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
           'robotics': ['BSX', 'TELA'],
