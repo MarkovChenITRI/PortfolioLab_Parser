@@ -13,26 +13,24 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```
 ## 使用方法
 
-
-
-### 1. 執行分析
-
-使用 IXIC_Parsor 類別進行分析：
-```python
-from PortfolioLab_Parser.utils import IXIC_Parsor, asyncio
-
-parser = IXIC_Parsor('./portfolio_list.yaml')
-asyncio.run(parser.update_async())
-df = parser.fit()
-df.to_csv('output.csv', index=True)
-```
-
-### 2. 新增、刪除投資標的
+### 1. 新增、刪除投資標的
 
 在程式中定義投資組合的分類及其對應的股票代碼(*需為YFinance可取得的代號)。例如：
 ```python
+from PortfolioLab_Parser.utils import IXIC_Parsor, asyncio
+parser = IXIC_Parsor('./portfolio_list.yaml')
+
 IXIC_Parsor.remove(category='AI', code='XOVR')
 IXIC_Parsor.add(category='AI', code='XOVR')
+```
+
+### 2. 執行分析
+
+使用 IXIC_Parsor 類別進行分析：
+```python
+asyncio.run(parser.update_async())
+df = parser.fit()
+df.to_csv('output.csv', index=True)
 ```
 
 ### 3. 顯示結果
