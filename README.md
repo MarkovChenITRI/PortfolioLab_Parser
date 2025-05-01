@@ -17,7 +17,7 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 
 在程式中定義投資組合的分類及其對應的股票代碼。例如：
 ```python
-portfolio_lists = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
+portfolio_list = {'silicon': ['NVDA','ARM', 'INTC', 'IBM', 'META', 'AMD', 'TXN', 'QCOM', 'AVGO', 'MU'],
           'robotics': ['BSX', 'TELA'],
           'fab': ['TSM', 'ASML', 'AMAT', 'INTC', 'AMKR'],
           'ai': ['XOVR', 'MSFT', 'META', 'GOOG'],
