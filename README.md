@@ -19,6 +19,7 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 ```python
 from PortfolioLab_Parser.utils import Portfolio
 portfolio = Portfolio()
+
 Portfolio.remove(category='AI', code='XOVR')
 Portfolio.add(category='AI', code='XOVR')
 ```
