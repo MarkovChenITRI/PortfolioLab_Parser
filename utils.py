@@ -1,8 +1,63 @@
-import requests, itertools, sklearn, aiohttp, asyncio
+import requests, itertools, sklearn, aiohttp, asyncio, yaml
 import pandas as pd
 import yfinance as yf
 from bs4 import BeautifulSoup
-from tqdm import tqdm
+
+class Portfolio():
+    def __init__(self, config_path='./portfolio_list.yaml'):
+        self.config_path = config_path
+
+    def load(self): 
+        with open(self.config_path, 'r') as f:
+            return yaml.safe_load(f)
+
+    def add(self, category, code):
+        category = category.lower()
+        with open(self.config_path, 'r') as f:
+            loaded_portfolio_list = yaml.safe_load(f)
+            if category not in loaded_portfolio_list:
+                loaded_portfolio_list[category] = []
+                res = f"[INFO] '{category}' category does not exist. Automatically created."
+                print(res)
+            if code not in loaded_portfolio_list[category]: 
+                try:
+                    yf.Ticker(code).info
+                    loaded_portfolio_list[category].append(code)
+                    res = f"[SUCCESS] Added stock '{code}' to category '{category}'."
+                    print(res)
+                except Exception as e:
+                    res = f"[ERROR] Failed to add stock '{code}' to category '{category}': {e}"
+                    print(res)
+                    return loaded_portfolio_list
+            else:
+                res = f"[WARNING] Stock '{code}' already exists in category '{category}'."
+                print(res)
+        with open(self.config_path, 'w') as f:
+            yaml.dump(loaded_portfolio_list, f, default_flow_style=False)
+        return loaded_portfolio_list, res
+
+    def remove(self, category, code):
+        category = category.lower()
+        with open(self.config_path, 'r') as f:
+            loaded_portfolio_list = yaml.safe_load(f)
+            if category in loaded_portfolio_list:
+                if code in loaded_portfolio_list[category]:
+                    loaded_portfolio_list[category].remove(code)
+                    res = f"[SUCCESS] Removed stock '{code}' from category '{category}'."
+                    print(res)
+                    if not loaded_portfolio_list[category]:  # Remove industry if empty
+                        del loaded_portfolio_list[category]
+                        res = f"[INFO] category '{category}' is now empty and has been removed."
+                        print(res)
+                else:
+                    res = f"[WARNING] Stock '{code}' not found in category '{category}'."
+                    print(res)
+            else:
+                res = f"[ERROR] category '{category}' does not exist."
+                print(res)
+        with open(self.config_path, 'w') as f:
+            yaml.dump(loaded_portfolio_list, f, default_flow_style=False)
+        return loaded_portfolio_list, res
 
 async def fetch_ticker_info_async(session, code, columns):
     df = yf.Ticker(code)
@@ -21,9 +76,8 @@ async def get_sharpo_async(session, code):
         return float(res)
 
 class IXIC_Parsor():
-  def __init__(self, portfolio_list, tqdm_provider=tqdm):
+  def __init__(self, portfolio_list):
     self.market = '^IXIC'
-    self.tqdm_provider = tqdm_provider
     self.company_list = portfolio_list
 
   async def update_async(self):

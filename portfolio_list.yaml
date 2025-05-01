@@ -1,0 +1,34 @@
+ai:
+- MSFT
+- META
+- GOOG
+- XOVR
+fab:
+- TSM
+- ASML
+- AMAT
+- INTC
+- AMKR
+it/ot:
+- MSFT
+- AMZN
+- GOOG
+pda:
+- AAPL
+- DELL
+- HPQ
+- META
+robotics:
+- BSX
+- TELA
+silicon:
+- NVDA
+- ARM
+- INTC
+- IBM
+- META
+- AMD
+- TXN
+- QCOM
+- AVGO
+- MU

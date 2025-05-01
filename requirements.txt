@@ -3,4 +3,5 @@ asyncio
 scikit-learn
 ipython
 yfinance
-tqdm
+gradio
+yaml
