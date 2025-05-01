@@ -1,0 +1,6 @@
+aiohttp
+asyncio
+scikit-learn
+ipython
+yfinance
+tqdm

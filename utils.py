@@ -1,37 +1,46 @@
-import requests, itertools, sklearn
+import requests, itertools, sklearn, aiohttp, asyncio
 import pandas as pd
 import yfinance as yf
 from bs4 import BeautifulSoup
-from tqdm.notebook import tqdm
+from tqdm import tqdm
+
+async def fetch_ticker_info_async(session, code, columns):
+    df = yf.Ticker(code)
+    row_data = {}
+    for key in columns:
+        row_data[key] = df.info.get(key, None)
+    row_data['Sharpo'] = await get_sharpo_async(session, code)
+    return code, row_data
+
+async def get_sharpo_async(session, code):
+    async with session.get(f'https://portfolioslab.com/symbol/{code}') as response:
+        text = await response.text()
+        soup = BeautifulSoup(text, "html.parser")
+        header_element = soup.find(id='sharpe-ratio')
+        res = str(header_element.find_all('b')[1]).replace('<b>', '').replace('</b>', '')
+        return float(res)
 
 class IXIC_Parsor():
   def __init__(self, portfolio_list, tqdm_provider=tqdm):
     self.market = '^IXIC'
     self.tqdm_provider = tqdm_provider
     self.company_list = portfolio_list
-    self.update()
 
-  def update(self):
-    columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
-    self.info_table = pd.DataFrame(columns=columns)
-    for code in self.tqdm_provider(set(tuple(itertools.chain(*self.company_list.values())))):
-      row_data = {'Update': False}
-      df = yf.Ticker(code)
-      for key in columns:
-        if key not in df.info:
-          row_data[key] = None
-        else:
-          row_data[key] = df.info[key]
-      row_data['Sharpo'] = self.get_sharpo(code)
-      self.info_table.loc[code] = row_data
-    return self.info_table
+  async def update_async(self):
+      columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
+      self.info_table = pd.DataFrame(columns=columns)
 
-  def get_sharpo(self, code):
-    web = requests.get(f'https://portfolioslab.com/symbol/{code}')
-    soup = BeautifulSoup(web.text, "html.parser")
-    header_element = soup.find(id='sharpe-ratio')
-    res = str(header_element.find_all('b')[1]).replace('<b>', '').replace('</b>', '')
-    return float(res)
+      async with aiohttp.ClientSession() as session:
+          tasks = [
+              fetch_ticker_info_async(session, code, columns)
+              for code in set(tuple(itertools.chain(*self.company_list.values())))
+          ]
+          results = await asyncio.gather(*tasks)
+
+      for code, row_data in results:
+          self.info_table.loc[code] = row_data
+      return self.info_table
+
 
   def fit(self, features = ['forwardPE', 'trailingPE', 'beta', 'shortRatio', 'profitMargins']):
     X, y = self.info_table[features], self.info_table['Sharpo']
