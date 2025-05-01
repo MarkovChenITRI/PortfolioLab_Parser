@@ -91,5 +91,5 @@ display_markdown(f"### Goodness of Fit: {parser.r2}\n" + df.to_markdown(), raw=T
 
 透過UI工具新增/刪除及檢視現有投資組合的狀態
 ```
-python dev.py
+python gradio-tool.py
 ```
