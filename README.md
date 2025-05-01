@@ -50,6 +50,7 @@ df = parser.fit()
 如果您使用Google Colab來測試這段程式，可以使用IPython來顯示分析結果：
 ```python
 from IPython.display import display_markdown
+
 display_markdown(f"### Goodness of Fit: {parser.r2}\n" + df.to_markdown(), raw=True)
 ```
 執行程式後，將輸出以下內容：
