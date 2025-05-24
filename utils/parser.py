@@ -16,7 +16,7 @@ def get_sharpo(code):
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
     header_element = soup.find(id='sharpe-ratio')
-    res = str(header_element.find_all('b')[1]).replace('<b>', '').replace('</b>', '')
+    res = str(header_element.find_all('b')[2]).replace('<b>', '').replace('</b>', '')
     return float(res)
 
 async def fetch_ticker_info_async(session, code, columns):
@@ -32,7 +32,7 @@ async def get_sharpo_async(session, code):
         text = await response.text()
         soup = BeautifulSoup(text, "html.parser")
         header_element = soup.find(id='sharpe-ratio')
-        res = str(header_element.find_all('b')[1]).replace('<b>', '').replace('</b>', '')
+        res = str(header_element.find_all('b')[2]).replace('<b>', '').replace('</b>', '')
         return float(res)
 
 class IXIC_Parsor():
