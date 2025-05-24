@@ -99,29 +99,22 @@ parser = IXIC_Parsor('./portfolio_list.yaml')
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column(scale=1):
-            gr.Image(Image.open('./assets/images/linebot.png'),
-                     label="LineBot QR Code", 
-                     show_share_button = False,
-                     show_download_button = False,
-                     type="pil")
+            gr.Markdown(
+                """
+                # 股票觀察清單管理工具
+                """
+            )
+            industry_input = gr.Textbox(label="Industry")
+            stock_input = gr.Textbox(label="Stock")
+            add_button = gr.Button("Add Stock")
+            remove_button = gr.Button("Remove Stock")
+    
             paramviewer = gr.ParamViewer(transform_portfolio(parser.load()),
                 header='Portfolio List',
             )
             start_button = gr.Button("Update/Test")
 
         with gr.Column(scale=12):
-            gr.Markdown(
-                """
-                # 股票觀察清單管理工具
-                """
-            )
-            with gr.Row():
-                industry_input = gr.Textbox(label="Industry")
-                stock_input = gr.Textbox(label="Stock")
-            with gr.Row():
-                add_button = gr.Button("Add Stock")
-                remove_button = gr.Button("Remove Stock")
-
             with gr.Tab("Overview"):
                 scatter_plot = gr.ScatterPlot(x='Premium', y='beta', color='categories', height=420)
 
