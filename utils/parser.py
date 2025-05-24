@@ -56,6 +56,15 @@ class IXIC_Parsor():
             self.info_table.loc[code] = row_data
         return self.info_table
 
+    def update(self):
+        self.columns = ['Sharpo', 'beta', 'trailingPE', 'forwardPE', 'shortRatio', 'marketCap', 'profitMargins', 'priceToBook', 'currentPrice', 'targetHighPrice', 'targetLowPrice', 'recommendationMean']
+        self.info_table = pd.DataFrame(columns=self.columns)
+
+        results = [fetch_ticker_info(code, self.columns) for code in set(tuple(itertools.chain(*self.load().values())))]
+        for code, row_data in results:
+            self.info_table.loc[code] = row_data
+        return self.info_table
+
     def load(self): 
         with open(self.config_path, 'r') as f:
             return yaml.safe_load(f)
