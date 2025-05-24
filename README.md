@@ -17,7 +17,7 @@ git clone https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
 
 在程式中定義投資組合的分類及其對應的股票代碼(*需為YFinance可取得的代號)。例如：
 ```python
-from PortfolioLab_Parser.utils import IXIC_Parsor, asyncio
+from utils.parser import IXIC_Parsor, asyncio
 parser = IXIC_Parsor('./portfolio_list.yaml')
 
 IXIC_Parsor.remove(category='AI', code='XOVR')
@@ -28,7 +28,7 @@ IXIC_Parsor.add(category='AI', code='XOVR')
 
 使用 IXIC_Parsor 類別進行分析：
 ```python
-asyncio.run(parser.update_async())
+parser.update()
 df = parser.fit()
 df.to_csv('output.csv', index=True)
 ```
